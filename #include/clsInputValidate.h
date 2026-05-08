@@ -1,46 +1,43 @@
 #pragma once
-
-#include <iostream>   
+#include <iostream>
 #include <string>     
 #include "clsDate.h"     
-using namespace std;
 
+using namespace std; template <class T>
 class clsInputValidate
 {
-
 public:
 
 
-	static bool IsNumberBetween(short Number, short From, short To)
+	static bool IsNumberBetween(T Number, T From, T To)
 	{
-		if (Number >= From || Number <= To)
+		if (Number >= From && Number <= To)
 			return true;
 		else
 			return false;
+
 	}
 
-	static bool IsNumberBetween(int Number, int From, int To)
+	static T ReadNumber(string ErrorMessage = "Invalid Number, Enter again\n")
 	{
-		if (Number >= From || Number <= To)
-			return true;
-		else
-			return false;
+		T Number;
+		while (!(cin >> Number)) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ErrorMessage;
+		}
+		return Number;
 	}
 
-	static bool IsNumberBetween(float Number, float From, float To)
+	static T ReadNumberBetween(T From, T To, string ErrorMessage = "Number is not within range, Enter again:\n")
 	{
-		if (Number >= From || Number <= To)
-			return true;
-		else
-			return false;
-	}
+		T Number = ReadNumber();
 
-	static bool IsNumberBetween(double Number, double From, double To)
-	{
-		if (Number >= From || Number <= To)
-			return true;
-		else
-			return false;
+		while (!IsNumberBetween(Number, From, To)) {
+			cout << ErrorMessage;
+			Number = ReadNumber();
+		}
+		return Number;
 	}
 
 	static bool IsDateBetween(clsDate Date, clsDate DateFrom, clsDate DateTo)
@@ -57,61 +54,12 @@ public:
 
 	}
 
-	static int ReadIntNumber(string ErrorMessage = "Invalid Number, Enter again:\n")
+	static string ReadString()
 	{
-		int Number;
-
-		while (!(cin >> Number))
-		{
-			// user didn't input a number
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cout << ErrorMessage;
-		}
-		return Number;
+		string  S1 = "";
+		// Usage of std::ws will extract allthe whitespace character
+		getline(cin >> ws, S1);
+		return S1;
 	}
 
-	static double ReadDdlNumber(string ErrorMessage = "Invalid Number, Enter again:\n")
-	{
-		double Number;
-
-		while (!(cin >> Number))
-		{
-			// user didn't input a number
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-			cout << ErrorMessage;
-		}
-		return Number;
-	}
-
-	static int ReadIntNumberBetween(int From, int To, string ErrorMessage = "Invalid Number, Enter again:\n")
-	{
-		int Number = ReadIntNumber();
-
-		while (!IsNumberBetween(Number, From, To))
-		{
-			cout << ErrorMessage;
-			Number = ReadIntNumber();
-
-		}
-
-		return Number;
-	}
-
-	static double ReadDdlNumberBetween(double From, double To, string ErrorMessage = "Invalid Number, Enter again:\n")
-	{
-		double Number = ReadDdlNumber();
-
-		while (!IsNumberBetween(Number, From, To))
-		{
-			cout << ErrorMessage;
-			Number = ReadDdlNumber();
-
-		}
-
-		return Number;
-	}
-
-}; 
+};
